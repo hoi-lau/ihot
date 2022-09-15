@@ -1,7 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
+import '../../utils/index.dart';
 import './Desktop.dart';
 import './Mobile.dart';
 
@@ -17,7 +16,7 @@ class AppContainer extends StatefulWidget {
 class _AppContainerState extends State<AppContainer> {
   @override
   Widget build(BuildContext context) {
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (isMobile()) {
       return const MobileAppContainer();
     }
     return const DesktopAppContainer();

@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
       title: 'faire',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Colors.orange,
       ),
       home: const AppContainer(),
     );

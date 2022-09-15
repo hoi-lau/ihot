@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../config/AppTheme.dart';
 import 'data.dart';
 
 class DesktopAppContainer extends StatefulWidget {
@@ -17,7 +18,6 @@ class _DesktopAppContainerState extends State<DesktopAppContainer> {
   @override
   void initState() {
     super.initState();
-    print('initState');
   }
 
   Widget _getPagesWidget(int index) {
@@ -33,21 +33,22 @@ class _DesktopAppContainerState extends State<DesktopAppContainer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Stack(
-          children: [
-            _getPagesWidget(0),
-            _getPagesWidget(1),
-          ],
-        ),
-        backgroundColor: const Color.fromRGBO(0, 0, 0, 0.6),
-        bottomNavigationBar: BottomNavigationBar(
-          items: itemList,
-          onTap: (int index) {
-            ///这里根据点击的index来显示，非index的page均隐藏
-            setState(() {
-              _selectIndex = index;
-            });
-          },
-        ));
+      body: Stack(
+        children: [
+          _getPagesWidget(0),
+          _getPagesWidget(1),
+        ],
+      ),
+      backgroundColor: appTheme.homeTheme.getBgColor(),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   items: itemList,
+      //   onTap: (int index) {
+      //     ///这里根据点击的index来显示，非index的page均隐藏
+      //     setState(() {
+      //       _selectIndex = index;
+      //     });
+      //   },
+      // ),
+    );
   }
 }

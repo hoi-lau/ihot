@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import 'BodyEditor.dart';
+import 'TitleEditor.dart';
+
 class DesktopHome extends StatefulWidget {
   const DesktopHome({Key? key}) : super(key: key);
 
@@ -10,11 +13,43 @@ class DesktopHome extends StatefulWidget {
 }
 
 class _DesktopHomeState extends State<DesktopHome> {
+  String title = '';
+
+  String content = '';
+
+  void onSubmit() {}
+
+  void updateTitle(String text) {
+    title = text;
+    print(title);
+  }
+
+  void updateContent(String text) {
+    content = text;
+    print(content);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-        // backgroundColor: Color.fromRGBO(241, 241, 248, 1),
-        body: SafeArea(
-            child: Text('home', style: TextStyle(color: Colors.black38))));
+    return Scaffold(
+      backgroundColor: const Color.fromRGBO(255, 255, 255, .1),
+      body: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TitleEditor(
+                title: title,
+                updateFn: updateTitle,
+              ),
+              BodyEditor(
+                content: content,
+                updateFn: updateContent,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

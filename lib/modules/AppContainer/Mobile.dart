@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../config/AppTheme.dart';
 import 'data.dart';
 
 class MobileAppContainer extends StatefulWidget {
@@ -17,7 +18,6 @@ class _MobileAppContainerState extends State<MobileAppContainer> {
   @override
   void initState() {
     super.initState();
-    print('initState');
   }
 
   Widget _getPagesWidget(int index) {
@@ -39,7 +39,7 @@ class _MobileAppContainerState extends State<MobileAppContainer> {
             _getPagesWidget(1),
           ],
         ),
-        backgroundColor: const Color.fromRGBO(0, 0, 0, 0.6),
+        backgroundColor: appTheme.homeTheme.getBgColor(),
         bottomNavigationBar: BottomNavigationBar(
           items: itemList,
           // backgroundColor: const Color.fromRGBO(241, 241, 248, 1),
