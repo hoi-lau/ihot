@@ -1,7 +1,7 @@
-import 'package:app/modules/AppContainer/index.dart';
+import 'package:app/modules/app_container/index.dart';
 import 'package:flutter/material.dart';
 
-import '../modules/Detail/index.dart';
+// import '../modules/Detail/index.dart';
 
 class MyRouter {
   static const homePage = 'app://';
@@ -12,8 +12,8 @@ class MyRouter {
     //   return WebViewPage(url, params: params);
     // } else {
     switch (url) {
-      case detailPage:
-        return DetailPage(params);
+      // case detailPage:
+      //   return DetailPage(params);
       case homePage:
         return const AppContainer();
       default:

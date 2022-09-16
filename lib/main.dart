@@ -1,8 +1,11 @@
+import 'package:app/config/AppTheme.dart';
 import 'package:flutter/material.dart';
 
-import 'modules/AppContainer/index.dart';
+import 'modules/app_container/index.dart';
+// import 'package:flutter/rendering.dart';
 
 void main() {
+  // debugPaintSizeEnabled = true;
   runApp(const MyApp());
 }
 
@@ -16,7 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'faire',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        backgroundColor: Colors.orange,
+        // backgroundColor: appTheme.homeTheme.getBgColor(),
       ),
       home: const AppContainer(),
     );

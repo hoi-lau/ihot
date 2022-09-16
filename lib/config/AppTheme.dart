@@ -22,7 +22,7 @@ class AppTheme {
 
   AppTheme() {
     if (isMobile()) {
-      homeTheme = PageTheme(Colors.white, Colors.orange);
+      homeTheme = PageTheme(const Color.fromRGBO(241, 242, 246, 1), Colors.orange);
       return;
     }
     homeTheme = PageTheme(const Color.fromRGBO(0, 0, 0, 0.6), Colors.orange);

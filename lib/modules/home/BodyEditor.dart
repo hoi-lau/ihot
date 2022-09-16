@@ -34,6 +34,7 @@ class BodyEditorState extends State<BodyEditor> {
       focusNode: _textFieldFocus,
       decoration: const InputDecoration(
         border: InputBorder.none,
+        hintText: 'description',
       ),
       maxLines: null,
       cursorColor: Colors.orange,

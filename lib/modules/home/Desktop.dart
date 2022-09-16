@@ -1,19 +1,18 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'BodyEditor.dart';
 import 'TitleEditor.dart';
 
-class MobileHome extends StatefulWidget {
-  const MobileHome({Key? key}) : super(key: key);
+class DesktopHome extends StatefulWidget {
+  const DesktopHome({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _MobileHomeState();
+    return _DesktopHomeState();
   }
 }
 
-class _MobileHomeState extends State<MobileHome> {
+class _DesktopHomeState extends State<DesktopHome> {
   String title = '';
 
   String content = '';
@@ -30,24 +29,13 @@ class _MobileHomeState extends State<MobileHome> {
     print(content);
   }
 
+  void handleEnter() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        actions: <Widget>[
-          CupertinoButton(
-            onPressed: () {},
-            child: const Text(
-              "完成",
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.orange, fontSize: 20),
-            ),
-          ),
-        ],
-      ),
-      body: SafeArea(
+      backgroundColor: const Color.fromRGBO(255, 255, 255, .1),
+      body: Container(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -55,11 +43,12 @@ class _MobileHomeState extends State<MobileHome> {
               TitleEditor(
                 title: title,
                 updateFn: updateTitle,
+                handleEnter: handleEnter,
               ),
               BodyEditor(
                 content: content,
                 updateFn: updateContent,
-              )
+              ),
             ],
           ),
         ),

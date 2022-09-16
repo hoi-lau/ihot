@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../Home/index.dart';
-import '../ListPage/index.dart';
+import '../home/index.dart';
+import '../search_page/index.dart';
 
 class IconItem {
   String label;
@@ -30,8 +30,5 @@ List<IconItem> items = [
       )),
 ];
 
-List<Widget> pages = [const Home(), const ListPage()];
-List<BottomNavigationBarItem> itemList = items
-    .map((e) => BottomNavigationBarItem(
-        icon: e.normalIcon, activeIcon: e.activeIcon, label: e.label))
-    .toList();
+List<Widget> pages = [const Home(), const SearchPage()];
+List<BottomNavigationBarItem> itemList = items.map((e) => BottomNavigationBarItem(icon: e.normalIcon, activeIcon: e.activeIcon, label: e.label)).toList();
