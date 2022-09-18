@@ -43,24 +43,22 @@ class _MobileHomeState extends State<MobileHome> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        appBar: PreferredSize(
-          preferredSize: Size.fromHeight(40),
-          child: AppBar(
-            backgroundColor: appTheme.homeTheme.getBgColor(),
-            centerTitle: true,
-            actions: <Widget>[
-              CupertinoButton(
-                onPressed: () {
-                  handleAction();
-                },
-                child: Text(
-                  appBarText,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(color: Colors.orange, fontSize: 16),
-                ),
+        appBar: AppBar(
+          backgroundColor: appTheme.homeTheme.getBgColor(),
+          // centerTitle: true,
+          // toolbarHeight: 50,
+          actions: <Widget>[
+            CupertinoButton(
+              onPressed: () {
+                handleAction();
+              },
+              child: Text(
+                appBarText,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: Colors.orange, fontSize: 18),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
