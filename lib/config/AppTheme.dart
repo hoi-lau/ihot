@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import '../utils/index.dart';
 
-class PageTheme {
-  PageTheme(this._bgColor, this._fontColor);
+class WidgetTheme {
+  WidgetTheme(this._bgColor, this._fontColor);
 
   final Color _bgColor;
 
@@ -18,14 +18,23 @@ class PageTheme {
 }
 
 class AppTheme {
-  late PageTheme homeTheme;
+  late WidgetTheme homeTheme;
+
+  late WidgetTheme searchTheme;
 
   AppTheme() {
     if (isMobile()) {
-      homeTheme = PageTheme(const Color.fromRGBO(241, 242, 246, 1), Colors.orange);
+      homeTheme = WidgetTheme(const Color.fromRGBO(241, 242, 246, 1),
+          const Color.fromRGBO(226, 166, 0, 1));
+      // homeTheme =
+      //     WidgetTheme(const Color.fromRGBO(255, 255, 255, 1), Colors.orange);
+      searchTheme = WidgetTheme(const Color.fromRGBO(227, 227, 232, 1),
+          const Color.fromRGBO(126, 127, 133, 1));
       return;
     }
-    homeTheme = PageTheme(const Color.fromRGBO(0, 0, 0, 0.6), Colors.orange);
+    homeTheme = WidgetTheme(const Color.fromRGBO(0, 0, 0, 0.6), Colors.orange);
+    searchTheme =
+        WidgetTheme(const Color.fromRGBO(255, 255, 255, 1), Colors.orange);
   }
 }
 
