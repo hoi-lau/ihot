@@ -1,6 +1,9 @@
+import 'package:app/data/model/CommonModel.dart';
 import 'package:dio/dio.dart';
-
+import 'dart:convert' as Convert;
 import 'DInterceptor.dart';
+
+String basePath = 'http://192.168.3.145:6789/v1';
 
 class Http {
   static final Http _instance = Http._internal();
@@ -77,7 +80,7 @@ class Http {
     return headers;
   }
 
-  Future get(
+  Future<T> get<T>(
     String path, {
     Map<String, dynamic>? params,
     Options? options,
@@ -102,16 +105,16 @@ class Http {
     }
     Response response;
     response = await dio.get(
-      path,
+      basePath + path,
       queryParameters: params,
       options: requestOptions,
       cancelToken: cancelToken ?? _cancelToken,
     );
-
-    return response.data;
+    return BaseResponse.fromMap(response.data).data;
+    // return response.data;
   }
 
-  Future post(
+  Future<T> post<T>(
     String path, {
     Map<String, dynamic>? params,
     data,
@@ -124,7 +127,7 @@ class Http {
       requestOptions = requestOptions.copyWith(headers: authorization);
     }
     var response = await dio.post(
-      path,
+      basePath + path,
       data: data,
       queryParameters: params,
       options: requestOptions,
@@ -147,7 +150,7 @@ class Http {
       requestOptions = requestOptions.copyWith(headers: authorization);
     }
     var response = await dio.put(
-      path,
+      basePath + path,
       data: data,
       queryParameters: params,
       options: requestOptions,

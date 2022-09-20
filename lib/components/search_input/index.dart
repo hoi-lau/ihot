@@ -52,7 +52,8 @@ class _SearchInputState extends State<SearchInput> {
                     Icons.cancel,
                     color: appTheme.searchTheme.getFontColor(),
                     size: 20,
-                  ))
+                  ),
+                )
               : null,
           hintText: '搜索',
           filled: true,

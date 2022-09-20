@@ -1,9 +1,13 @@
+import 'package:app/data/model/Home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+
+import '../../config/AppTheme.dart';
 
 class TaskLabelList extends StatefulWidget {
   const TaskLabelList({Key? key, required this.dataList}) : super(key: key);
 
-  final List<int> dataList;
+  final List<TaskLabelModel> dataList;
 
   @override
   State<StatefulWidget> createState() {
@@ -12,22 +16,104 @@ class TaskLabelList extends StatefulWidget {
 }
 
 class _TaskLabelListState extends State<TaskLabelList> {
+  // final list = <int>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+
+  Widget _buildTaskLabel(int index) {
+    return Container(
+      key: Key('${widget.dataList[index].id}'),
+      padding: const EdgeInsets.only(
+        left: 12,
+        right: 12,
+      ),
+      alignment: Alignment.centerLeft,
+      child: Column(
+        children: [
+          Slidable(
+            key: Key('${widget.dataList[index].id}'),
+            closeOnScroll: false,
+            endActionPane: ActionPane(
+              motion: const ScrollMotion(),
+              extentRatio: 0.5,
+              children: [
+                CustomSlidableAction(
+                  onPressed: (e) {},
+                  backgroundColor: const Color.fromRGBO(47, 132, 227, 1),
+                  child: Icon(
+                    Icons.edit_note,
+                    color: appTheme.white,
+                  ),
+                ),
+                CustomSlidableAction(
+                  onPressed: (e) {},
+                  backgroundColor: appTheme.danger,
+                  child: Icon(
+                    Icons.delete_forever,
+                    color: appTheme.white,
+                  ),
+                ),
+              ],
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(right: 8),
+                  width: 26,
+                  child: Icon(
+                    Icons.task_alt_sharp,
+                    color: appTheme.homeTheme.getFontColor(),
+                    size: 18,
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    height: 30,
+                    alignment: Alignment.centerLeft,
+                    child: Text(widget.dataList[index].title),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          index < widget.dataList.length - 1
+              ? Container(
+                  height: 1,
+                  margin: const EdgeInsets.only(left: 26),
+                  color: const Color.fromRGBO(209, 209, 210, 1),
+                )
+              : Container(),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final list = <int>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-    list.addAll([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-    list.addAll([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-    return SingleChildScrollView(
-      child: Column(
-        children: list
-            .map(
-              (e) => Container(
-                // key: Key('$e'),
-                child: Text('$e'),
-              ),
-            )
-            .toList(),
-      ),
+    return Column(
+      children: [
+        ClipRRect(
+          borderRadius: const BorderRadius.all(Radius.circular(16)),
+          child: ReorderableListView.builder(
+            itemCount: widget.dataList.length,
+            shrinkWrap: true,
+            itemBuilder: (BuildContext context, int index) {
+              return Material(
+                color: Colors.transparent,
+                key: Key('${widget.dataList[index].id}'),
+                child: Ink(
+                  color: appTheme.white,
+                  child: InkWell(
+                    child: _buildTaskLabel(index),
+                    onTap: () {},
+                  ),
+                ),
+              );
+            },
+            // shrinkWrap: true,
+            physics: const ClampingScrollPhysics(),
+            onReorder: (int oldIndex, int newIndex) {},
+          ),
+        ),
+      ],
     );
   }
 }
