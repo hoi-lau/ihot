@@ -1,5 +1,6 @@
 import 'package:app/data/model/Home.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../config/AppTheme.dart';
@@ -90,27 +91,30 @@ class _TaskLabelListState extends State<TaskLabelList> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        ClipRRect(
-          borderRadius: const BorderRadius.all(Radius.circular(16)),
-          child: ReorderableListView.builder(
-            itemCount: widget.dataList.length,
-            shrinkWrap: true,
-            itemBuilder: (BuildContext context, int index) {
-              return Material(
-                color: Colors.transparent,
-                key: Key('${widget.dataList[index].id}'),
-                child: Ink(
-                  color: appTheme.white,
-                  child: InkWell(
-                    child: _buildTaskLabel(index),
-                    onTap: () {},
+        Flexible(
+          child: ClipRRect(
+            borderRadius: const BorderRadius.all(Radius.circular(16)),
+            child: ReorderableListView.builder(
+              itemCount: widget.dataList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Material(
+                  color: Colors.transparent,
+                  key: Key('${widget.dataList[index].id}'),
+                  child: Ink(
+                    color: appTheme.white,
+                    child: InkWell(
+                      child: _buildTaskLabel(index),
+                      onTap: () {},
+                    ),
                   ),
-                ),
-              );
-            },
-            // shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
-            onReorder: (int oldIndex, int newIndex) {},
+                );
+              },
+              shrinkWrap: true,
+              // physics: const ClampingScrollPhysics(),
+              // shrinkWrap: true,
+              // physics: const NeverScrollableScrollPhysics(),
+              onReorder: (int oldIndex, int newIndex) {},
+            ),
           ),
         ),
       ],

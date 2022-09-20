@@ -50,9 +50,10 @@ class _MobileHomeState extends State<MobileHome> {
   }
 
   void initData() async {
-    var data = await fetchLabelList();
+    // var data = await fetchLabelList();
     setState(() {
-      labelList = [...data];
+      // labelList = [...data];
+      labelList = [TaskLabelModel(1, 'to do'), TaskLabelModel(2, '最近删除')];
     });
   }
 
