@@ -9,3 +9,9 @@ class BaseResponse<T> {
     return BaseResponse(msg: map['msg'], code: map['code'], data: map['data']);
   }
 }
+
+abstract class JsonObject {
+  // JsonObject fromMap(Map<String, dynamic> map);
+
+  JsonObject fromJsonString(String str);
+}

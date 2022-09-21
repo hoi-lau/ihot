@@ -37,6 +37,8 @@ dependencies:
   flutter_local_notifications: ^9.0.0
   dio: ^4.0.6
   flutter_slidable: ^2.0.0
+  shared_preferences: ^2.0.15
+  connectivity_plus: ^2.3.7
 
 dev_dependencies:
   flutter_test:
@@ -59,6 +61,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/img/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

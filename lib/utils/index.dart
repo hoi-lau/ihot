@@ -1,5 +1,7 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
 bool isMobile() {
@@ -24,4 +26,12 @@ int getKeyCode(RawKeyEvent e) {
     keyCode = data.keyCode;
   }
   return keyCode;
+}
+
+void closeKeyboard(BuildContext context) {
+  FocusScopeNode currentFocus = FocusScope.of(context);
+  // 键盘是否是弹起状态
+  if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
+    FocusManager.instance.primaryFocus?.unfocus();
+  }
 }

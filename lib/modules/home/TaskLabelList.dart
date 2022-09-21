@@ -67,9 +67,12 @@ class _TaskLabelListState extends State<TaskLabelList> {
                 ),
                 Expanded(
                   child: Container(
-                    height: 30,
+                    height: 48,
                     alignment: Alignment.centerLeft,
-                    child: Text(widget.dataList[index].title),
+                    child: Text(
+                      widget.dataList[index].title,
+                      style: const TextStyle(fontSize: 16),
+                    ),
                   ),
                 ),
               ],
@@ -110,7 +113,7 @@ class _TaskLabelListState extends State<TaskLabelList> {
                 );
               },
               shrinkWrap: true,
-              // physics: const ClampingScrollPhysics(),
+              physics: const ClampingScrollPhysics(),
               // shrinkWrap: true,
               // physics: const NeverScrollableScrollPhysics(),
               onReorder: (int oldIndex, int newIndex) {},

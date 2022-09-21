@@ -9,9 +9,9 @@ Future<List<TaskLabelModel>> fetchLabelList() async {
 }
 
 Future<void> updateLabel(TaskLabelModel data) async {
-  await http.post<void>('/task_label/update', data: data);
+  await http.post<void>('/task_label/update', data: TaskLabelModel.toMap(data));
 }
 
 Future<void> addLabel(TaskLabelModel data) async {
-  await http.post<void>('/task_label/add', data: data);
+  await http.post<void>('/task_label/add', data: TaskLabelModel.toMap(data));
 }
