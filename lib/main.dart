@@ -1,4 +1,5 @@
 import 'package:app/config/AppTheme.dart';
+import 'package:app/modules/home/index.dart';
 import 'package:flutter/material.dart';
 
 import 'modules/app_container/index.dart';
@@ -19,9 +20,11 @@ class MyApp extends StatelessWidget {
       title: 'faire',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        // backgroundColor: appTheme.homeTheme.getBgColor(),
+          // backgroundColor: appTheme.homeTheme.getBgColor(),
+          ),
+      home: const AppContainer(
+        child: Home(),
       ),
-      home: const AppContainer(),
     );
   }
 }

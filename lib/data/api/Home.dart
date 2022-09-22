@@ -15,3 +15,7 @@ Future<void> updateLabel(TaskLabelModel data) async {
 Future<void> addLabel(TaskLabelModel data) async {
   await http.post<void>('/task_label/add', data: TaskLabelModel.toMap(data));
 }
+
+Future<void> delLabel(TaskLabelModel data) async {
+  await http.post<void>('/task_label/del', data: TaskLabelModel.toMap(data));
+}

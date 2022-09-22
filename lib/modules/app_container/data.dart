@@ -31,4 +31,7 @@ List<IconItem> items = [
 ];
 
 List<Widget> pages = [const Home(), const SearchPage()];
-List<BottomNavigationBarItem> itemList = items.map((e) => BottomNavigationBarItem(icon: e.normalIcon, activeIcon: e.activeIcon, label: e.label)).toList();
+List<BottomNavigationBarItem> itemList = items
+    .map((e) => BottomNavigationBarItem(
+        icon: e.normalIcon, activeIcon: e.activeIcon, label: e.label))
+    .toList();

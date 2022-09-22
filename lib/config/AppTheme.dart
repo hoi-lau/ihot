@@ -21,12 +21,16 @@ class AppTheme {
   late WidgetTheme homeTheme;
 
   late WidgetTheme searchTheme;
-  
+
   final Color danger = const Color.fromRGBO(252, 62, 48, 1);
 
   final Color white = Colors.white;
 
   final Color black = Colors.black;
+
+  final Color appleBlue = const Color.fromRGBO(0, 122, 255, 1);
+
+  final Color gray = const Color.fromRGBO(138, 137, 142, 1);
 
   AppTheme() {
     if (isMobile()) {

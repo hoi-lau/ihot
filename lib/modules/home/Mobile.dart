@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:app/components/dialog/IOSDialog.dart';
-import 'package:app/components/search_input/index.dart';
 import 'package:app/config/AppTheme.dart';
 import 'package:app/constant/Constant.dart';
 import 'package:app/data/api/Home.dart';
 import 'package:app/data/model/Home.dart';
 import 'package:app/modules/Home/TaskLabelList.dart';
+import 'package:app/routes/index.dart';
 import 'package:app/utils/EvenBus.dart';
 import 'package:app/utils/SharedPrefs.dart';
 import 'package:app/utils/index.dart';
@@ -35,22 +33,24 @@ class _MobileHomeState extends State<MobileHome> {
 
   bool offline = false;
 
+  int activeIndex = 0;
+
   final TextEditingController controller = TextEditingController(text: '');
 
   final TextEditingController labelController = TextEditingController(text: '');
 
   void handleAction() {
-    setState(() {
-      switch (appBarText) {
-        case HomeAction.edit:
-          appBarText = HomeAction.complete;
-          break;
-        case HomeAction.complete:
-          appBarText = HomeAction.edit;
-          break;
-      }
-      // appBarText = (appBarText == HomeAction.edit ? HomeAction.complete : HomeAction.edit);
-    });
+    // setState(() {
+    //   switch (appBarText) {
+    //     case HomeAction.edit:
+    //       appBarText = HomeAction.complete;
+    //       break;
+    //     case HomeAction.complete:
+    //       appBarText = HomeAction.edit;
+    //       break;
+    //   }
+    // });
+    MyRouter.push(context, MyRouter.searchPage, "");
   }
 
   @override
@@ -63,7 +63,7 @@ class _MobileHomeState extends State<MobileHome> {
   Future<void> initData() async {
     await sharedPrefsUtils.initSharedPref();
     initDataFromCache();
-    // fetchListData();
+    fetchListData();
   }
 
   void initDataFromCache() {
@@ -97,18 +97,51 @@ class _MobileHomeState extends State<MobileHome> {
 
   Future<bool> handleLabelAdd(String text) async {
     if (text.isNotEmpty) {
+      labelList.insert(labelList.length - 1,
+          TaskLabelModel(title: text, id: activeIndex, task_count: 0));
+      setState(() {});
       await addLabel(TaskLabelModel(title: text));
-      await initData();
+      await fetchListData();
       return true;
     } else {
       return false;
     }
   }
 
+  Future<bool> handleLabelUpdate(String text) async {
+    if (text == labelList[activeIndex].title) {
+      return true;
+    } else if (text.isNotEmpty) {
+      labelList[activeIndex].title = text;
+      setState(() {});
+      await updateLabel(
+          TaskLabelModel(title: text, id: labelList[activeIndex].id));
+      fetchListData();
+      return true;
+    }
+    return false;
+  }
+
+  void handleLabelDel(int index) {
+    if (labelList[index].id! > 0) {
+      delLabel(TaskLabelModel(
+          id: labelList[index].id, title: labelList[index].title));
+      fetchListData();
+    }
+    labelList.removeAt(index);
+    setState(() {});
+  }
+
+  void handleLabelEdit(int index) {
+    activeIndex = index;
+    labelController.text = labelList[index].title;
+    handleFolderTap(context);
+  }
+
   void handleSearchInputChange(e) {}
 
   void handleFolderTap(BuildContext context) {
-    labelController.text = '';
+    // labelController.text = '';
     showCupertinoDialog<void>(
       context: context,
       builder: (BuildContext context) {
@@ -116,10 +149,14 @@ class _MobileHomeState extends State<MobileHome> {
           context: context,
           title: '新建标签',
           confirmTxt: '确认',
-          confirmColor: const Color.fromRGBO(0, 122, 255, 1),
+          confirmColor: appTheme.appleBlue,
           onTap: () async {
-            bool closeDialog = await handleLabelAdd(labelController.text);
-            return closeDialog;
+            if (activeIndex < 0) {
+              handleLabelAdd(labelController.text);
+            } else {
+              handleLabelUpdate(labelController.text);
+            }
+            return true;
           },
           cancelCallback: (context) {
             closeKeyboard(context);
@@ -183,20 +220,24 @@ class _MobileHomeState extends State<MobileHome> {
                   style: TextStyle(color: appTheme.homeTheme.getFontColor()),
                 )
               : null,
-          // actions: <Widget>[
-          //   CupertinoButton(
-          //     onPressed: () {
-          //       handleAction();
-          //     },
-          //     padding: const EdgeInsets.all(0.0),
-          //     child: Text(
-          //       appBarText,
-          //       textAlign: TextAlign.center,
-          //       style: TextStyle(
-          //           color: appTheme.homeTheme.getFontColor(), fontSize: 14),
-          //     ),
-          //   ),
-          // ],
+          actions: <Widget>[
+            CupertinoButton(
+              onPressed: () {
+                handleAction();
+              },
+              padding: const EdgeInsets.all(0.0),
+              child: Icon(
+                Icons.search_outlined,
+                color: appTheme.appleBlue,
+              ),
+              // child: Text(
+              //   appBarText,
+              //   textAlign: TextAlign.center,
+              //   style: TextStyle(
+              //       color: appTheme.homeTheme.getFontColor(), fontSize: 14),
+              // ),
+            ),
+          ],
         ),
         body: Container(
           decoration: BoxDecoration(
@@ -216,6 +257,8 @@ class _MobileHomeState extends State<MobileHome> {
                   padding: const EdgeInsets.all(16),
                   child: TaskLabelList(
                     dataList: labelList,
+                    handleLabelEdit: handleLabelEdit,
+                    handleLabelDel: handleLabelDel,
                   ),
                 ),
               ),
@@ -226,6 +269,8 @@ class _MobileHomeState extends State<MobileHome> {
                   children: [
                     GestureDetector(
                       onTap: () {
+                        labelController.text = '';
+                        activeIndex = getUid();
                         handleFolderTap(context);
                       },
                       child: Icon(
@@ -234,7 +279,9 @@ class _MobileHomeState extends State<MobileHome> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        MyRouter.push(context, MyRouter.editorPage, "params");
+                      },
                       child: Icon(
                         Icons.edit_note,
                         color: appTheme.homeTheme.getFontColor(),

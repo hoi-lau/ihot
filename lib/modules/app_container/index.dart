@@ -9,7 +9,9 @@ import './Desktop.dart';
 import './Mobile.dart';
 
 class AppContainer extends StatefulWidget {
-  const AppContainer({Key? key}) : super(key: key);
+  const AppContainer({Key? key, required this.child}) : super(key: key);
+
+  final Widget child;
 
   @override
   State<StatefulWidget> createState() {
@@ -40,7 +42,9 @@ class _AppContainerState extends State<AppContainer> {
   @override
   Widget build(BuildContext context) {
     if (isMobile()) {
-      return const MobileAppContainer();
+      return MobileAppContainer(
+        child: widget.child,
+      );
     }
     return const DesktopAppContainer();
   }

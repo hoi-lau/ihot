@@ -8,6 +8,12 @@ bool isMobile() {
   return Platform.isAndroid || Platform.isIOS;
 }
 
+int uid = -1;
+
+int getUid() {
+  return uid--;
+}
+
 int getKeyCode(RawKeyEvent e) {
   int keyCode = 0;
   print('e: $e');

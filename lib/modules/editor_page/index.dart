@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../../config/AppTheme.dart';
+import '../../routes/index.dart';
 import '../../utils/localNotify.dart';
 import '../Home/BodyEditor.dart';
 import '../Home/TitleEditor.dart';
@@ -43,10 +44,6 @@ class _StatefulWidgetState extends State<EditorPage> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 2), () {
-      print('object');
-      titleEditorKey.currentState?.controller.text = 'title';
-    });
   }
 
   @override
@@ -55,6 +52,17 @@ class _StatefulWidgetState extends State<EditorPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
+        leading: CupertinoButton(
+          onPressed: () {
+            MyRouter.pop(context);
+          },
+          padding: EdgeInsets.zero,
+          child: Icon(
+            Icons.arrow_back_ios_new,
+            size: 20,
+            color: appTheme.gray,
+          ),
+        ),
         actions: <Widget>[
           CupertinoButton(
             onPressed: () {},

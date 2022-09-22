@@ -1,14 +1,22 @@
 import 'package:app/data/model/Home.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../config/AppTheme.dart';
 
 class TaskLabelList extends StatefulWidget {
-  const TaskLabelList({Key? key, required this.dataList}) : super(key: key);
+  const TaskLabelList({
+    Key? key,
+    required this.dataList,
+    required this.handleLabelDel,
+    required this.handleLabelEdit,
+  }) : super(key: key);
 
   final List<TaskLabelModel> dataList;
+
+  final Function handleLabelDel;
+
+  final Function handleLabelEdit;
 
   @override
   State<StatefulWidget> createState() {
@@ -17,9 +25,92 @@ class TaskLabelList extends StatefulWidget {
 }
 
 class _TaskLabelListState extends State<TaskLabelList> {
-  // final list = <int>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+  bool showEditActions(int index) {
+    if ([0, 1].contains(index)) return false;
+    if (index == widget.dataList.length - 1) return false;
+    return true;
+  }
+
+  Widget getLabelIcon(int index) {
+    Widget res;
+
+    switch (index) {
+      case 0:
+        res = Icon(
+          Icons.task_alt_sharp,
+          color: appTheme.homeTheme.getFontColor(),
+          size: 18,
+        );
+        break;
+      case 1:
+        res = Icon(
+          Icons.history,
+          color: appTheme.homeTheme.getFontColor(),
+          size: 18,
+        );
+        break;
+      default:
+        res = Icon(
+          Icons.label_important_outline_rounded,
+          color: appTheme.homeTheme.getFontColor(),
+          size: 18,
+        );
+    }
+    if (index == widget.dataList.length - 1) {
+      return Icon(
+        Icons.delete_forever,
+        color: appTheme.homeTheme.getFontColor(),
+        size: 18,
+      );
+    }
+
+    return res;
+  }
 
   Widget _buildTaskLabel(int index) {
+    var content = Row(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(right: 8),
+          width: 26,
+          child: getLabelIcon(index),
+        ),
+        Expanded(
+          child: Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 48,
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    widget.dataList[index].title,
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 4,
+                  right: 4,
+                ),
+                child: Text(
+                  '${widget.dataList[index].task_count}',
+                  style: TextStyle(
+                    color: appTheme.gray,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              Icon(
+                Icons.arrow_forward_ios_rounded,
+                color: appTheme.gray,
+                size: 16,
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
     return Container(
       key: Key('${widget.dataList[index].id}'),
       padding: const EdgeInsets.only(
@@ -29,55 +120,39 @@ class _TaskLabelListState extends State<TaskLabelList> {
       alignment: Alignment.centerLeft,
       child: Column(
         children: [
-          Slidable(
-            key: Key('${widget.dataList[index].id}'),
-            closeOnScroll: false,
-            endActionPane: ActionPane(
-              motion: const ScrollMotion(),
-              extentRatio: 0.5,
-              children: [
-                CustomSlidableAction(
-                  onPressed: (e) {},
-                  backgroundColor: const Color.fromRGBO(47, 132, 227, 1),
-                  child: Icon(
-                    Icons.edit_note,
-                    color: appTheme.white,
+          showEditActions(index)
+              ? Slidable(
+                  key: Key('${widget.dataList[index].id}'),
+                  closeOnScroll: false,
+                  endActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    extentRatio: 0.5,
+                    children: [
+                      CustomSlidableAction(
+                        onPressed: (e) {
+                          widget.handleLabelEdit(index);
+                        },
+                        backgroundColor: const Color.fromRGBO(47, 132, 227, 1),
+                        child: Icon(
+                          Icons.edit_note,
+                          color: appTheme.white,
+                        ),
+                      ),
+                      CustomSlidableAction(
+                        onPressed: (e) {
+                          widget.handleLabelDel(index);
+                        },
+                        backgroundColor: appTheme.danger,
+                        child: Icon(
+                          Icons.delete_forever,
+                          color: appTheme.white,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-                CustomSlidableAction(
-                  onPressed: (e) {},
-                  backgroundColor: appTheme.danger,
-                  child: Icon(
-                    Icons.delete_forever,
-                    color: appTheme.white,
-                  ),
-                ),
-              ],
-            ),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.only(right: 8),
-                  width: 26,
-                  child: Icon(
-                    Icons.task_alt_sharp,
-                    color: appTheme.homeTheme.getFontColor(),
-                    size: 18,
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 48,
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      widget.dataList[index].title,
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+                  child: content,
+                )
+              : content,
           index < widget.dataList.length - 1
               ? Container(
                   height: 1,
