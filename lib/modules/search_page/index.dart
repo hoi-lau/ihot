@@ -17,6 +17,12 @@ class _SearchPageState extends State<SearchPage> {
   void handleInputChange(String text) {}
 
   @override
+  void initState() {
+    super.initState();
+    // print(ModalRoute.of(context)?.settings);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(

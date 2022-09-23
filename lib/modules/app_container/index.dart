@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:app/data/database/index.dart';
 import 'package:app/utils/EvenBus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class _AppContainerState extends State<AppContainer> {
       print(result);
       bus.emit('network', result == ConnectivityResult.none);
     });
+    dbHelper.initDBHelper();
   }
 
   @override

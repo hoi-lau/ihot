@@ -50,7 +50,7 @@ class _MobileHomeState extends State<MobileHome> {
     //       break;
     //   }
     // });
-    MyRouter.push(context, MyRouter.searchPage, "");
+    MyRouter.push(context, MyRouter.searchPage, "id=hahaha");
   }
 
   @override

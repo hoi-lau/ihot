@@ -10,30 +10,23 @@ class MyRouter {
   static const editorPage = 'app://EditorPage';
   static const detailPage = 'app://DetailPage';
 
-  final List<Widget> pages = [
-    const Home(),
-    const SearchPage(),
-    const EditorPage()
-  ];
-
   Widget _getPage(String url, dynamic params) {
     // if (url.startsWith('https://') || url.startsWith('http://')) {
     //   return WebViewPage(url, params: params);
     // } else {
-    var res = pages[0];
+    Widget res = const Home();
     switch (url) {
       case homePage:
         break;
       case searchPage:
-        res = pages[1];
+        res = const SearchPage();
         break;
       case editorPage:
-        res = pages[2];
+        res = EditorPage(projectId: params);
         break;
       default:
         break;
     }
-    // }
     return AppContainer(
       child: res,
     );

@@ -10,7 +10,10 @@ import '../Home/BodyEditor.dart';
 import '../Home/TitleEditor.dart';
 
 class EditorPage extends StatefulWidget {
-  const EditorPage({Key? key}) : super(key: key);
+
+  const EditorPage({Key? key, required this.projectId}) : super(key: key);
+
+  final int projectId;
 
   @override
   State<StatefulWidget> createState() {

@@ -1,6 +1,5 @@
 import 'package:app/data/model/CommonModel.dart';
 import 'package:dio/dio.dart';
-import 'dart:convert' as Convert;
 import 'DInterceptor.dart';
 
 String basePath = 'http://192.168.3.145:6789/v1';

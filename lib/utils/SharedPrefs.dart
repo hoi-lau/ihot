@@ -42,7 +42,6 @@ class SharedPrefsUtils {
   Future<void> setObjectList<T extends Object>(
       String key, List<T> value) async {
     var list = value.map((e) => json.encode(e)).toList();
-    print(list);
     _prefs.setStringList(key, list);
   }
 
