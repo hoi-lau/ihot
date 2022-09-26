@@ -5,6 +5,7 @@ import 'package:app/utils/EvenBus.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 
+import '../../utils/SharedPrefs.dart';
 import '../../utils/index.dart';
 import './Desktop.dart';
 import './Mobile.dart';
@@ -23,16 +24,25 @@ class AppContainer extends StatefulWidget {
 class _AppContainerState extends State<AppContainer> {
   late StreamSubscription subscription;
 
+  bool _mounted = false;
+
   @override
   void initState() {
     super.initState();
+    beforeMounted();
+  }
+
+  Future<void> beforeMounted() async {
     subscription = Connectivity()
         .onConnectivityChanged
         .listen((ConnectivityResult result) {
       print(result);
       bus.emit('network', result == ConnectivityResult.none);
     });
-    dbHelper.initDBHelper();
+    await sharedPrefsUtils.initSharedPref();
+    await dbHelper.initDBHelper();
+    _mounted = true;
+    setState(() {});
   }
 
   @override
@@ -45,7 +55,7 @@ class _AppContainerState extends State<AppContainer> {
   Widget build(BuildContext context) {
     if (isMobile()) {
       return MobileAppContainer(
-        child: widget.child,
+        child: _mounted ? widget.child : Container(),
       );
     }
     return const DesktopAppContainer();

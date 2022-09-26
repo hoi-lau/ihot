@@ -53,3 +53,10 @@ class SharedPrefsUtils {
 }
 
 SharedPrefsUtils sharedPrefsUtils = SharedPrefsUtils();
+
+int getUid() {
+  int uid = sharedPrefsUtils.getInt('task_label_uid') ?? -1;
+  uid--;
+  sharedPrefsUtils.setInt('task_label_uid', uid);
+  return uid;
+}

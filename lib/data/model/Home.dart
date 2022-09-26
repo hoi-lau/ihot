@@ -20,6 +20,13 @@ class TaskLabelModel {
     };
   }
 
+  static Map<String, dynamic> toMapWithoutCount(TaskLabelModel label) {
+    return <String, dynamic>{
+      "id": label.id,
+      "title": label.title,
+    };
+  }
+
   static TaskLabelModel fromJsonString(String str) {
     var obj = json.decode(str);
     var res = TaskLabelModel(

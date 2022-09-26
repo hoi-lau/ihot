@@ -4,7 +4,6 @@ class RequestInterceptor extends Interceptor {
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
     super.onRequest(options, handler);
-    print(options);
   }
 }
 
@@ -12,6 +11,5 @@ class ErrorInterceptor extends Interceptor {
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) {
     super.onError(err, handler);
-    print(err);
   }
 }

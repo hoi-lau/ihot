@@ -21,12 +21,10 @@ class _DesktopHomeState extends State<DesktopHome> {
 
   void updateTitle(String text) {
     title = text;
-    print(title);
   }
 
   void updateContent(String text) {
     content = text;
-    print(content);
   }
 
   void handleEnter() {}

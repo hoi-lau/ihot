@@ -1,7 +1,7 @@
 import 'package:app/components/dialog/IOSDialog.dart';
 import 'package:app/config/AppTheme.dart';
 import 'package:app/constant/Constant.dart';
-import 'package:app/data/api/Home.dart';
+import 'package:app/data/database/api/home.dart';
 import 'package:app/data/model/Home.dart';
 import 'package:app/modules/Home/TaskLabelList.dart';
 import 'package:app/routes/index.dart';
@@ -61,27 +61,14 @@ class _MobileHomeState extends State<MobileHome> {
   }
 
   Future<void> initData() async {
-    await sharedPrefsUtils.initSharedPref();
-    initDataFromCache();
     fetchListData();
   }
 
-  void initDataFromCache() {
-    var cachedLabelList = sharedPrefsUtils.getObjectList<TaskLabelModel>(
-        'labelList', TaskLabelModel.fromJsonString);
-    if (cachedLabelList != null) {
-      setState(() {
-        labelList = [...cachedLabelList];
-      });
-    }
-  }
-
   Future<void> fetchListData() async {
-    var data = await fetchLabelList();
+    var data = await queryLabelList();
     setState(() {
       labelList = [...data];
     });
-    sharedPrefsUtils.setObjectList('labelList', data);
   }
 
   void initListener() {
@@ -97,10 +84,10 @@ class _MobileHomeState extends State<MobileHome> {
 
   Future<bool> handleLabelAdd(String text) async {
     if (text.isNotEmpty) {
-      labelList.insert(labelList.length - 1,
-          TaskLabelModel(title: text, id: activeIndex, task_count: 0));
+      var label = TaskLabelModel(title: text, id: getUid());
+      labelList.insert(labelList.length - 1, label);
       setState(() {});
-      await addLabel(TaskLabelModel(title: text));
+      await addTaskLabel(label);
       await fetchListData();
       return true;
     } else {
@@ -114,7 +101,7 @@ class _MobileHomeState extends State<MobileHome> {
     } else if (text.isNotEmpty) {
       labelList[activeIndex].title = text;
       setState(() {});
-      await updateLabel(
+      await updateTaskLabel(
           TaskLabelModel(title: text, id: labelList[activeIndex].id));
       fetchListData();
       return true;
@@ -124,7 +111,7 @@ class _MobileHomeState extends State<MobileHome> {
 
   void handleLabelDel(int index) {
     if (labelList[index].id! > 0) {
-      delLabel(TaskLabelModel(
+      delTaskLabel(TaskLabelModel(
           id: labelList[index].id, title: labelList[index].title));
       fetchListData();
     }
@@ -203,13 +190,18 @@ class _MobileHomeState extends State<MobileHome> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Flexible(
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  child: Image.asset(
-                    '${Constant.ASSETS_IMG}favicon.png',
-                    width: 24,
-                    height: 24,
+                child: GestureDetector(
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(12)),
+                    child: Image.asset(
+                      '${Constant.ASSETS_IMG}favicon.png',
+                      width: 24,
+                      height: 24,
+                    ),
                   ),
+                  onTap: () {
+                    MyRouter.push(context, MyRouter.appOverviewPage, '');
+                  },
                 ),
               ),
             ],

@@ -29,17 +29,17 @@ class DBHelper {
       version: version,
       onCreate: (Database database, int version) async {
         print('db => onCreate');
+        await initBaseData(database);
       },
       onOpen: (Database database) async {},
     );
-    await initBaseData();
-    var result = await db.query('task_label');
-    print(result);
+    // await initBaseData(db);
+    // initBaseData(db);
   }
 
-  Future<void> initBaseData() async {
+  Future<void> initBaseData(Database database) async {
     for (var i = 0; i < faireSql.length; i++) {
-      await db.execute(faireSql[i]);
+      await database.execute(faireSql[i]);
     }
   }
 }
