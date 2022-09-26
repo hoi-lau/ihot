@@ -1,3 +1,4 @@
+import 'package:app/modules/app_overview/index.dart';
 import 'package:flutter/material.dart';
 
 import '../home/index.dart';
@@ -30,7 +31,11 @@ List<IconItem> items = [
       )),
 ];
 
-List<Widget> pages = [const Home(), const SearchPage()];
+List<Widget> pages = [
+  const AppOverview(),
+  const Home(),
+  const SearchPage(),
+];
 List<BottomNavigationBarItem> itemList = items
     .map((e) => BottomNavigationBarItem(
         icon: e.normalIcon, activeIcon: e.activeIcon, label: e.label))

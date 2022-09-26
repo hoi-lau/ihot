@@ -2,7 +2,7 @@ import 'package:app/data/model/CommonModel.dart';
 import 'package:dio/dio.dart';
 import 'DInterceptor.dart';
 
-String basePath = 'http://192.168.3.145:6789/v1';
+String basePath = 'http://192.168.31.250:6789/v1';
 
 class Http {
   static final Http _instance = Http._internal();

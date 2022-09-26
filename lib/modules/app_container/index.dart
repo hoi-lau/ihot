@@ -11,9 +11,9 @@ import './Desktop.dart';
 import './Mobile.dart';
 
 class AppContainer extends StatefulWidget {
-  const AppContainer({Key? key, required this.child}) : super(key: key);
+  const AppContainer({Key? key, this.child}) : super(key: key);
 
-  final Widget child;
+  final Widget? child;
 
   @override
   State<StatefulWidget> createState() {
@@ -54,9 +54,7 @@ class _AppContainerState extends State<AppContainer> {
   @override
   Widget build(BuildContext context) {
     if (isMobile()) {
-      return MobileAppContainer(
-        child: _mounted ? widget.child : Container(),
-      );
+      return _mounted ? const MobileAppContainer() : Container();
     }
     return const DesktopAppContainer();
   }
