@@ -17,6 +17,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     if (isMobile()) {
+      // return const Hero(tag: 'home-page', child: MobileHome());
       return const MobileHome();
     }
     return const DesktopHome();

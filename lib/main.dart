@@ -20,11 +20,10 @@ class MyApp extends StatelessWidget {
       title: 'faire',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-          // backgroundColor: appTheme.homeTheme.getBgColor(),
-          ),
-      home: const AppContainer(
-        child: Home(),
+        // backgroundColor: Colors.transparent,
+        backgroundColor: appTheme.homeTheme.getBgColor(),
       ),
+      home: const AppContainer(),
     );
   }
 }

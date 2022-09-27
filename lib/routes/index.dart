@@ -1,3 +1,4 @@
+import 'package:app/modules/app_container/data.dart';
 import 'package:app/modules/app_container/index.dart';
 import 'package:app/modules/app_overview/index.dart';
 import 'package:app/modules/editor_page/index.dart';
@@ -5,7 +6,7 @@ import 'package:app/modules/home/index.dart';
 import 'package:app/modules/search_page/index.dart';
 import 'package:flutter/material.dart';
 
-const List<Widget> pages = [Home(), SearchPage(), AppOverview()];
+// const List<Widget> pages = [Home(), SearchPage(), AppOverview()];
 
 Widget appOverviewHeroWrap = Container();
 
@@ -23,19 +24,19 @@ class MyRouter {
     Widget res;
     switch (url) {
       case homePage:
-        res = pages[0];
+        res = outsidePages[1];
         break;
       case searchPage:
-        res = pages[1];
+        res = const SearchPage();
         break;
       case appOverviewPage:
-        res = pages[2];
+        res = outsidePages[0];
         break;
       case editorPage:
         res = EditorPage(projectId: params);
         break;
       default:
-        res = pages[0];
+        res = outsidePages[1];
         break;
     }
     return AppContainer(

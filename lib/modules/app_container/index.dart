@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:app/data/database/index.dart';
+import 'package:app/modules/app_container/Desktop.dart';
+import 'package:app/modules/app_container/Mobile.dart';
+import 'package:app/modules/home/index.dart';
 import 'package:app/utils/EvenBus.dart';
+import 'package:app/utils/SharedPrefs.dart';
+import 'package:app/utils/index.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-
-import '../../utils/SharedPrefs.dart';
-import '../../utils/index.dart';
-import './Desktop.dart';
-import './Mobile.dart';
 
 class AppContainer extends StatefulWidget {
   const AppContainer({Key? key, this.child}) : super(key: key);
@@ -41,6 +41,7 @@ class _AppContainerState extends State<AppContainer> {
     });
     await sharedPrefsUtils.initSharedPref();
     await dbHelper.initDBHelper();
+    // await
     _mounted = true;
     setState(() {});
   }
@@ -54,7 +55,11 @@ class _AppContainerState extends State<AppContainer> {
   @override
   Widget build(BuildContext context) {
     if (isMobile()) {
-      return _mounted ? const MobileAppContainer() : Container();
+      return _mounted
+          ? MobileAppContainer(
+              child: widget.child ?? const Home(),
+            )
+          : Container();
     }
     return const DesktopAppContainer();
   }

@@ -1,6 +1,5 @@
 import 'package:app/components/dialog/IOSDialog.dart';
 import 'package:app/config/AppTheme.dart';
-import 'package:app/constant/Constant.dart';
 import 'package:app/data/database/api/home.dart';
 import 'package:app/data/model/Home.dart';
 import 'package:app/modules/Home/TaskLabelList.dart';
@@ -182,7 +181,9 @@ class _MobileHomeState extends State<MobileHome> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        backgroundColor: appTheme.homeTheme.getBgColor(),
         appBar: faireAppBar(
+          context: context,
           actions: <Widget>[
             CupertinoButton(
               onPressed: () {
@@ -196,64 +197,12 @@ class _MobileHomeState extends State<MobileHome> {
             ),
           ],
         ),
-        // appBar: AppBar(
-        //   elevation: 0,
-        //   backgroundColor: appTheme.homeTheme.getBgColor(),
-        //   // centerTitle: true,
-        //   toolbarHeight: 36,
-        //   leading: Column(
-        //     mainAxisAlignment: MainAxisAlignment.center,
-        //     children: [
-        //       Flexible(
-        //         child: GestureDetector(
-        //           child: ClipRRect(
-        //             borderRadius: const BorderRadius.all(Radius.circular(12)),
-        //             child: Image.asset(
-        //               '${Constant.ASSETS_IMG}favicon.png',
-        //               width: 24,
-        //               height: 24,
-        //             ),
-        //           ),
-        //           onTap: () {
-        //             // MyRouter.push(context, MyRouter.appOverviewPage, '');
-        //             bus.emit('page-change', 0);
-        //           },
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        //   title: offline
-        //       ? Text(
-        //           'offline',
-        //           style: TextStyle(color: appTheme.homeTheme.getFontColor()),
-        //         )
-        //       : null,
-        //   actions: <Widget>[
-        //     CupertinoButton(
-        //       onPressed: () {
-        //         handleAction();
-        //       },
-        //       padding: const EdgeInsets.all(0.0),
-        //       child: Icon(
-        //         Icons.search_outlined,
-        //         color: appTheme.appleBlue,
-        //       ),
-        //     ),
-        //   ],
-        // ),
         body: Container(
           decoration: BoxDecoration(
             color: appTheme.homeTheme.getBgColor(),
           ),
           child: Column(
             children: [
-              // Padding(
-              //   padding: const EdgeInsets.only(left: 16, right: 16, top: 8),
-              //   child: SearchInput(
-              //     handleInputChange: handleSearchInputChange,
-              //     enabled: appBarText == HomeAction.edit,
-              //   ),
-              // ),
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(16),
@@ -291,7 +240,7 @@ class _MobileHomeState extends State<MobileHome> {
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           ),
         ),

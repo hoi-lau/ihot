@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 import 'dart:ui';
@@ -43,12 +42,64 @@ Future<Uint8List> widgetToImage(GlobalKey _globalKey) async {
   Completer<Uint8List> completer = Completer();
   RenderRepaintBoundary boundary =
       _globalKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
-  if (boundary.debugNeedsPaint) {
-    print('object');
-    // return Future.delayed(const Duration(milliseconds: 1000), () => widgetToImage(_globalKey));
-  }
   var image = await boundary.toImage();
   ByteData? byteData = await image.toByteData(format: ImageByteFormat.png);
   completer.complete(byteData?.buffer.asUint8List());
   return completer.future;
+}
+
+/// Creates an image from the given widget by first spinning up a element and render tree,
+/// then waiting for the given [wait] amount of time and then creating an image via a [RepaintBoundary].
+///
+/// The final image will be of size [imageSize] and the the widget will be layout, ... with the given [logicalSize].
+Future<Uint8List> createImageFromWidget(Widget? widget) async {
+  assert(widget != null);
+  final RenderRepaintBoundary repaintBoundary = RenderRepaintBoundary();
+
+  final Size logicalSize = window.physicalSize / window.devicePixelRatio;
+  final Size imageSize = window.physicalSize;
+
+  assert(logicalSize.aspectRatio == imageSize.aspectRatio);
+
+  final RenderView renderView = RenderView(
+    window: window,
+    child: RenderPositionedBox(
+        alignment: Alignment.center, child: repaintBoundary),
+    configuration: ViewConfiguration(
+      size: logicalSize,
+      devicePixelRatio: 1.0,
+    ),
+  );
+
+  final PipelineOwner pipelineOwner = PipelineOwner();
+  final BuildOwner buildOwner = BuildOwner(focusManager: FocusManager());
+
+  pipelineOwner.rootNode = renderView;
+  renderView.prepareInitialFrame();
+
+  final RenderObjectToWidgetElement<RenderBox> rootElement =
+      RenderObjectToWidgetAdapter<RenderBox>(
+    container: repaintBoundary,
+    child: widget,
+  ).attachToRenderTree(buildOwner);
+
+  buildOwner.buildScope(rootElement);
+
+  // if (wait != null) {
+  await Future.delayed(const Duration(milliseconds: 150));
+  // }
+
+  buildOwner.buildScope(rootElement);
+  buildOwner.finalizeTree();
+
+  pipelineOwner.flushLayout();
+  pipelineOwner.flushCompositingBits();
+  pipelineOwner.flushPaint();
+
+  var image = await repaintBoundary.toImage(
+      pixelRatio: imageSize.width / logicalSize.width);
+  var byteData =
+      (await image.toByteData(format: ImageByteFormat.png)) as ByteData;
+  print(byteData);
+  return byteData.buffer.asUint8List();
 }

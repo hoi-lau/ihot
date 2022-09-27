@@ -25,7 +25,7 @@ class _DesktopAppContainerState extends State<DesktopAppContainer> {
       offstage: _selectIndex != index,
       child: TickerMode(
         enabled: _selectIndex == index,
-        child: pages[index],
+        child: outsidePages[index],
       ),
     );
   }

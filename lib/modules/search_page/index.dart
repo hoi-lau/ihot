@@ -19,7 +19,6 @@ class _SearchPageState extends State<SearchPage> {
   @override
   void initState() {
     super.initState();
-    // print(ModalRoute.of(context)?.settings);
   }
 
   @override

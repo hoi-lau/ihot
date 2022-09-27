@@ -1,4 +1,5 @@
 import 'package:app/modules/app_overview/index.dart';
+import 'package:app/modules/base64_page/index.dart';
 import 'package:flutter/material.dart';
 
 import '../home/index.dart';
@@ -31,11 +32,14 @@ List<IconItem> items = [
       )),
 ];
 
-List<Widget> pages = [
+List<Widget> outsidePages = [
   const AppOverview(),
   const Home(),
-  const SearchPage(),
+  // const SearchPage(),
+  const Base64Page()
 ];
+
+List<String> outsideHero = ['home-page', 'base64-page'];
 List<BottomNavigationBarItem> itemList = items
     .map((e) => BottomNavigationBarItem(
         icon: e.normalIcon, activeIcon: e.activeIcon, label: e.label))
