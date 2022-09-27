@@ -39,9 +39,10 @@ class MyRouter {
         res = outsidePages[1];
         break;
     }
-    return AppContainer(
-      child: res,
-    );
+    return res;
+    // return AppContainer(
+    //   child: res,
+    // );
   }
 
   MyRouter.pushNoParams(BuildContext context, String url) {

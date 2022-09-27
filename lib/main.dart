@@ -2,9 +2,6 @@ import 'package:app/config/AppTheme.dart';
 import 'package:app/modules/home/index.dart';
 import 'package:flutter/material.dart';
 
-import 'modules/app_container/index.dart';
-// import 'package:flutter/rendering.dart';
-
 void main() {
   // debugPaintSizeEnabled = true;
   runApp(const MyApp());
@@ -23,7 +20,7 @@ class MyApp extends StatelessWidget {
         // backgroundColor: Colors.transparent,
         backgroundColor: appTheme.homeTheme.getBgColor(),
       ),
-      home: const AppContainer(),
+      home: const Home(),
     );
   }
 }
