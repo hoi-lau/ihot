@@ -1,9 +1,12 @@
 import 'dart:async';
 
+import 'package:app/config/AppTheme.dart';
 import 'package:app/data/database/index.dart';
 import 'package:app/modules/app_container/Desktop.dart';
 import 'package:app/modules/app_container/Mobile.dart';
+import 'package:app/modules/app_inherit_widget.dart';
 import 'package:app/modules/home/index.dart';
+import 'package:app/modules/hot_home/hot_home.dart';
 import 'package:app/utils/EvenBus.dart';
 import 'package:app/utils/SharedPrefs.dart';
 import 'package:app/utils/index.dart';
@@ -54,13 +57,24 @@ class _AppContainerState extends State<AppContainer> {
 
   @override
   Widget build(BuildContext context) {
-    if (isMobile()) {
-      return _mounted
-          ? MobileAppContainer(
-              child: widget.child ?? const Home(),
-            )
-          : Container();
+    Widget child = Container();
+    if (_mounted) {
+      if (isMobile()) {
+        child = MobileAppContainer(child: widget.child ?? const HotHome());
+      } else {
+        child = const DesktopAppContainer();
+      }
     }
-    return const DesktopAppContainer();
+    return AppInheritWidget(
+      blackMode: false,
+      child: MaterialApp(
+        title: 'faire',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          backgroundColor: appTheme.homeTheme.getBgColor(),
+        ),
+        home: child,
+      ),
+    );
   }
 }

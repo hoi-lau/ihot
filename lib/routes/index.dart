@@ -1,14 +1,7 @@
 import 'package:app/modules/app_container/data.dart';
-import 'package:app/modules/app_container/index.dart';
-import 'package:app/modules/app_overview/index.dart';
 import 'package:app/modules/editor_page/index.dart';
-import 'package:app/modules/home/index.dart';
 import 'package:app/modules/search_page/index.dart';
 import 'package:flutter/material.dart';
-
-// const List<Widget> pages = [Home(), SearchPage(), AppOverview()];
-
-Widget appOverviewHeroWrap = Container();
 
 class MyRouter {
   static const homePage = 'app://';
@@ -40,9 +33,6 @@ class MyRouter {
         break;
     }
     return res;
-    // return AppContainer(
-    //   child: res,
-    // );
   }
 
   MyRouter.pushNoParams(BuildContext context, String url) {

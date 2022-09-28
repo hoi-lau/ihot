@@ -1,4 +1,5 @@
 import 'package:app/config/AppTheme.dart';
+import 'package:app/modules/app_container/index.dart';
 import 'package:app/modules/home/index.dart';
 import 'package:flutter/material.dart';
 
@@ -13,14 +14,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'faire',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // backgroundColor: Colors.transparent,
-        backgroundColor: appTheme.homeTheme.getBgColor(),
-      ),
-      home: const Home(),
-    );
+    return AppContainer();
+    // return MaterialApp(
+    //   title: 'faire',
+    //   debugShowCheckedModeBanner: false,
+    //   theme: ThemeData(
+    //     // backgroundColor: Colors.transparent,
+    //     backgroundColor: appTheme.homeTheme.getBgColor(),
+    //   ),
+    //   home: const Home(),
+    // );
   }
 }
