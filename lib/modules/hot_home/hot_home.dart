@@ -7,8 +7,10 @@ import 'package:app/modules/hot_home/components/juejin.dart';
 import 'package:app/modules/hot_home/components/v2ex.dart';
 import 'package:app/modules/hot_home/components/weibo.dart';
 import 'package:app/modules/hot_home/components/zhihu.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'dart:io';
+
+var httpClient = HttpClient();
 
 class HotHome extends StatefulWidget {
   const HotHome({Key? key}) : super(key: key);
@@ -34,7 +36,6 @@ class _HotHomeState extends State<HotHome> {
   final List<HotItem> hotList = [
     const HotItem(
         title: '虎扑',
-        // avatar: AssetImage('${avatarPrefix}hupu.png'),
         avatar: AssetImage('${Constant.ASSETS_IMG}hupu.png'),
         content: HupuHot()),
     const HotItem(
@@ -102,7 +103,7 @@ class _HotHomeState extends State<HotHome> {
               child: TabBar(
                 isScrollable: true,
                 tabs: tabs,
-                // padding: EdgeInsets.only(top: 4),
+                padding: const EdgeInsets.only(left: 8, right: 8),
                 labelColor: Colors.black,
                 indicatorColor: Colors.blue,
               ),
