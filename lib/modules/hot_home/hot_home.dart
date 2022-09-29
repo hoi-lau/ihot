@@ -109,11 +109,7 @@ class _HotHomeState extends State<HotHome> {
               ),
             ),
           ),
-          body: Container(
-            margin: const EdgeInsets.only(top: 8),
-            padding: const EdgeInsets.all(16),
-            child: TabBarView(children: hotList.map((e) => e.content).toList()),
-          ),
+          body: TabBarView(children: hotList.map((e) => e.content).toList()),
         ),
       ),
     );

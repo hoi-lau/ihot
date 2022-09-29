@@ -103,3 +103,19 @@ Future<Uint8List> createImageFromWidget(Widget? widget) async {
   print(byteData);
   return byteData.buffer.asUint8List();
 }
+
+/// nmb > 0
+String thousandSeparate(int nmb) {
+  var origin = '$nmb';
+  if (nmb < 1000) return origin;
+  var res = '';
+  for (var i = origin.length; i > 0;) {
+    i = i - 3;
+    if (i < 0) {
+      res = '${origin.substring(0, i + 3)},$res';
+      break;
+    }
+    res = '${origin.substring(i, i + 3)},$res';
+  }
+  return res.substring(0, res.length - 1);
+}
