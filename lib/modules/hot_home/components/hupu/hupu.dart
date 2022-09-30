@@ -2,7 +2,10 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/components/shimmer/shimmer.dart';
+import 'package:app/modules/hot_home/components/hupu/hupu_list.dart';
+import 'package:app/modules/hot_home/components/hupu/model.dart';
 import 'package:app/modules/hot_home/hot_home.dart';
+import 'package:app/routes/index.dart';
 import 'package:app/utils/index.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -16,45 +19,6 @@ class HupuHot extends StatefulWidget {
   }
 }
 
-class Tag {
-  Tag({required this.title, required this.tagId});
-
-  String title;
-  int tagId;
-}
-
-class Pics {
-  Pics({required this.url});
-
-  String url;
-}
-
-class VideoBody {
-  VideoBody({required this.img});
-
-  String img;
-}
-
-class PostHeader {
-  PostHeader(
-      {required this.title, required this.topic_name, this.pics, this.video});
-
-  String title;
-  String topic_name;
-  List<Pics>? pics;
-  VideoBody? video;
-}
-
-class PostResp {
-  PostResp({required this.schemaUrl, required this.thread});
-
-  String schemaUrl;
-  PostHeader thread;
-}
-
-/// https://bbs.mobileapi.hupu.com/3/7.5.56/bbsallapi/tag/v1/heatTag
-/// https://games.mobileapi.hupu.com/3/7.5.56/hotRank/?sign=571179e0844a9606eec015c6a0e8482c&category=70003&clientId=102750844&deviceId=BtCkC6CGNpJxt2S1GVXjY7S6GRVtxgQpL%2BIeC8RNz16fNWfJaL0iF7zo4iJrVkJctPhAnY3FKiNQ9e%2BRif4%2B05g%3D%3D&cid=102750844&puid=96756348&token=NDYxNzY2MTg%3D%7CMTY1MzI5OTU3OQ%3D%3D%7Ce5fe39d8b45d7b4f5b0ef2a31ef33bfb&night=0&crt=1664369941&time_zone=Asia%2FShanghai&client=634510FA-B7A2-4295-BE84-14CA669C712F&bddid=HVKYUEZNE3XBOE7V4CKOBA2WAJJHZOW7CSIXERKY5N4OR5C6YXSA01
-/// huputiyu://bbs/topicTag?tagId=34997&clt=d1fa2b2a-3fb6-0f01-0b1f-f1df0242f9f5&r=kqappshare_news
 class _HupuHotState extends State<HupuHot> with AutomaticKeepAliveClientMixin {
   int activeIndex = 0;
 
@@ -64,7 +28,7 @@ class _HupuHotState extends State<HupuHot> with AutomaticKeepAliveClientMixin {
 
   List<dynamic> rankHotList = [];
 
-  List<List<PostResp>> allHotList = [];
+  List<List<PostResp>> allHotList = [[], [], [], [], [], [], [], []];
 
   final List<Tag> tagsList = [
     Tag(title: '话题榜', tagId: -1),
@@ -103,7 +67,9 @@ class _HupuHotState extends State<HupuHot> with AutomaticKeepAliveClientMixin {
   }
 
   Future<void> initPostList(int index) async {
-    if (allHotList[index - 1].isNotEmpty) return;
+    if (allHotList[index - 1].isNotEmpty) {
+      return;
+    }
     setState(() {
       _loading = true;
     });
@@ -112,6 +78,7 @@ class _HupuHotState extends State<HupuHot> with AutomaticKeepAliveClientMixin {
         'https://games.mobileapi.hupu.com/3/7.5.56/hotRank/?category=${tagsList[index].tagId}&cid=102750844&crt=${timestamp.substring(0, 10)}';
     var request = await httpClient.getUrl(Uri.parse(url));
     var response = await request.close();
+
     if (response.statusCode == HttpStatus.ok) {
       var json = await response.transform(utf8.decoder).join();
       var data = jsonDecode(json);
@@ -126,17 +93,21 @@ class _HupuHotState extends State<HupuHot> with AutomaticKeepAliveClientMixin {
                   video: e['thread']['video'] != null
                       ? VideoBody(img: e['thread']['video']['img'])
                       : null,
+                  share: UrlBody(
+                      url: e['thread']['share'] != null
+                          ? e['thread']['share']['url']
+                          : ''),
                   pics: e['thread']['pics'] != null
-                      ? e['thread']['pics'].map<Pics>((ele) {
-                          return Pics(url: ele['url']);
+                      ? e['thread']['pics'].map<UrlBody>((ele) {
+                          return UrlBody(url: ele['url']);
                         }).toList()
                       : []),
             ),
           )
           .toList();
       setState(() {
-        _loading = false;
         allHotList[index - 1] = [...list];
+        _loading = false;
       });
     } else {
       // error deal
@@ -231,83 +202,10 @@ class _HupuHotState extends State<HupuHot> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Widget _buildHotListItem(int i, int index) {
-    print(i);
-    return ShimmerLoading(
-      key: Key('$index'),
-      isLoading: _loading,
-      child: PostHotListItem(
-        loading: _loading,
-        child: allHotList[i].isNotEmpty
-            ? Container(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(
-                      width: 1,
-                      color: Color.fromRGBO(240, 241, 245, 1),
-                    ),
-                  ),
-                ),
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Wrap(
-                            children: [
-                              Text(
-                                allHotList[i][index].thread.title,
-                                style: const TextStyle(fontSize: 16),
-                              )
-                            ],
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 8),
-                            child: Text(
-                              allHotList[i][index].thread.topic_name,
-                              style: const TextStyle(
-                                color: Color.fromRGBO(133, 144, 166, 1),
-                                fontSize: 12,
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    buildPostImage(allHotList[i][index].thread),
-                  ],
-                ),
-              )
-            : Container(),
-      ),
-    );
-  }
-
-  Widget buildPostImage(PostHeader data) {
-    if (data.video != null) {
-      return Image.network(
-        data.video!.img,
-        width: 56,
-        height: 80,
-      );
-    }
-    if (data.pics != null && data.pics!.isNotEmpty) {
-      return Image.network(
-        data.pics![0].url,
-        width: 56,
-        height: 80,
-      );
-    }
-    return Container();
-  }
-
   List<Widget> _buildList() {
     List<Widget> children = [
       Shimmer(
-        // key: const Key('0'),
+        key: const Key('0'),
         child: ListView(
           physics: _loading ? const NeverScrollableScrollPhysics() : null,
           children:
@@ -315,15 +213,12 @@ class _HupuHotState extends State<HupuHot> with AutomaticKeepAliveClientMixin {
         ),
       ),
     ];
-    for (var i = 1; i < tagsList.length; i++) {
+    for (int i = 1; i < tagsList.length; i++) {
       children.add(
         Shimmer(
           key: Key('$i'),
-          child: ListView(
-            physics: _loading ? const NeverScrollableScrollPhysics() : null,
-            children: List.generate(
-                allHotList[i - 1].isEmpty ? maxRows : allHotList[i - 1].length,
-                (index) => _buildHotListItem(i - i, index)),
+          child: PostHotList(
+            tagId: tagsList[i].tagId,
           ),
         ),
       );
@@ -354,12 +249,7 @@ class _HupuHotState extends State<HupuHot> with AutomaticKeepAliveClientMixin {
               borderRadius: BorderRadius.circular(20),
               color: Colors.redAccent,
             ),
-            onTap: (int i) async {
-              if (i > 0) {
-                await initPostList(i);
-                setState(() {});
-              }
-            },
+            onTap: (int i) async {},
             tabs: tagsList
                 .map(
                   (e) => Tab(
@@ -381,154 +271,4 @@ class _HupuHotState extends State<HupuHot> with AutomaticKeepAliveClientMixin {
 
   @override
   bool get wantKeepAlive => true;
-}
-
-class PostHotListItem extends StatelessWidget {
-  const PostHotListItem({Key? key, required this.loading, required this.child})
-      : super(key: key);
-
-  final bool loading;
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    if (loading) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8),
-                Container(
-                  width: double.infinity,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Container(
-                  width: 250,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                const SizedBox(height: 16),
-              ],
-            ),
-          ),
-          const SizedBox(width: 8),
-          Container(
-            width: 72,
-            height: 32,
-            margin: const EdgeInsets.only(top: 16),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-          const SizedBox(width: 8),
-        ],
-      );
-    }
-    return child;
-  }
-}
-
-class RankHotListItem extends StatelessWidget {
-  const RankHotListItem({Key? key, required this.loading, required this.child})
-      : super(key: key);
-
-  final bool loading;
-
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    if (loading) {
-      return Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            width: 8,
-          ),
-          Container(
-            width: 20,
-            height: 20,
-            margin: const EdgeInsets.only(top: 8),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-          const SizedBox(
-            width: 8,
-          ),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8),
-                Container(
-                  width: double.infinity,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                const SizedBox(
-                  height: 4,
-                ),
-                Container(
-                  width: 250,
-                  height: 24,
-                  decoration: BoxDecoration(
-                    color: Colors.black,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                ),
-                const SizedBox(height: 16),
-              ],
-            ),
-          ),
-          Container(
-            width: 32,
-            height: 32,
-            margin: const EdgeInsets.only(top: 8, left: 8, right: 8),
-            decoration: BoxDecoration(
-              color: Colors.black,
-              borderRadius: BorderRadius.circular(4),
-            ),
-          ),
-        ],
-      );
-    }
-    return child;
-  }
-}
-
-class ClipperPath extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    var p = Path();
-    p.moveTo(size.width * 0.2, 0);
-    p.lineTo(size.width, 0);
-    p.lineTo(size.width * 0.8, size.height);
-    p.lineTo(0, size.height);
-    p.lineTo(size.width * 0.2, 0);
-    return p;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) {
-    return true;
-  }
 }

@@ -1,3 +1,4 @@
+import 'package:app/components/WebViewPage.dart';
 import 'package:app/modules/app_container/data.dart';
 import 'package:app/modules/editor_page/index.dart';
 import 'package:app/modules/search_page/index.dart';
@@ -12,8 +13,10 @@ class MyRouter {
 
   Widget _getPage(String url, dynamic params) {
     // if (url.startsWith('https://') || url.startsWith('http://')) {
-    //   return WebViewPage(url, params: params);
-    // } else {
+    //   return WebViewPage(
+    //     url: url,
+    //   );
+    // }
     Widget res;
     switch (url) {
       case homePage:
@@ -44,6 +47,14 @@ class MyRouter {
   MyRouter.push(BuildContext context, String url, dynamic params) {
     Navigator.push(context, MaterialPageRoute(builder: (context) {
       return _getPage(url, params);
+    }));
+  }
+
+  MyRouter.goWebView(BuildContext context, String url) {
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return WebViewPage(
+        url: url,
+      );
     }));
   }
 

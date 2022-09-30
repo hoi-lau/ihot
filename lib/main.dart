@@ -1,11 +1,12 @@
-import 'package:app/config/AppTheme.dart';
+import 'dart:io';
+
 import 'package:app/modules/app_container/index.dart';
-import 'package:app/modules/home/index.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   // debugPaintSizeEnabled = true;
   runApp(const MyApp());
+  // HttpOverrides.global = _HttpOverrides();
 }
 
 class MyApp extends StatelessWidget {
@@ -14,15 +15,28 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return AppContainer();
-    // return MaterialApp(
-    //   title: 'faire',
-    //   debugShowCheckedModeBanner: false,
-    //   theme: ThemeData(
-    //     // backgroundColor: Colors.transparent,
-    //     backgroundColor: appTheme.homeTheme.getBgColor(),
-    //   ),
-    //   home: const Home(),
-    // );
+    return const AppContainer();
+  }
+}
+
+class _HttpOverrides extends HttpOverrides {
+  List<String> needProxy = [];
+
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    final HttpClient client = super.createHttpClient(context);
+    client.badCertificateCallback =
+        (X509Certificate cert, String host, int port) => true;
+    return client;
+  }
+
+  @override
+  String findProxyFromEnvironment(_, __) {
+    if (needProxy.any((element) => _.origin.contains(element))) {
+      print('proxy');
+      return 'PROXY 192.168.3.145:8899;'; // IP address of your proxy
+    }
+    print('DIRECT');
+    return 'DIRECT';
   }
 }
