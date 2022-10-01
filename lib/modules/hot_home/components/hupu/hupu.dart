@@ -5,7 +5,6 @@ import 'package:app/components/shimmer/shimmer.dart';
 import 'package:app/modules/hot_home/components/hupu/hupu_list.dart';
 import 'package:app/modules/hot_home/components/hupu/model.dart';
 import 'package:app/modules/hot_home/hot_home.dart';
-import 'package:app/routes/index.dart';
 import 'package:app/utils/index.dart';
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -192,6 +191,14 @@ class _HupuHotState extends State<HupuHot> with AutomaticKeepAliveClientMixin {
                         '${rankHotList[index]['icon']}',
                         width: 32,
                         height: 32,
+                        // loadingBuilder: (BuildContext context, Widget wg,
+                        //     ImageChunkEvent? e) {
+                        //   return Image.asset('name');
+                        // },
+                        errorBuilder: (BuildContext context, Object exception,
+                            StackTrace? stackTrace) {
+                          return Container();
+                        },
                       ),
                     ],
                   ),

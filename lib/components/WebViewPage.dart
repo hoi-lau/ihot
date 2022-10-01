@@ -6,13 +6,13 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewPage extends StatefulWidget {
   String url;
-  String title = '';
+  String title = "";
   final bool isLocalUrl;
 
   late WebViewController _webViewController;
 
   WebViewPage(
-      {Key? key, required this.url, this.isLocalUrl = false, this.title = ''})
+      {Key? key, required this.url, this.isLocalUrl = false, this.title = ""})
       : super(key: key);
 
   @override
@@ -46,10 +46,10 @@ class _WebViewPage extends State<WebViewPage> {
       elevation: 0,
       backgroundColor: const Color(0x00ccd0d7),
       toolbarHeight: 48,
-      title: Text(
+      title: widget.title.isNotEmpty ? Text(
         widget.title,
         style: const TextStyle(color: Colors.black, fontSize: 14),
-      ),
+      ) : null,
       centerTitle: true,
       leading: IconButton(
         icon: const Icon(
@@ -103,9 +103,8 @@ class _WebViewPage extends State<WebViewPage> {
                   .evaluateJavascript('document.title')
                   .then((title) {
                 setState(() {
-                  widget.title = title;
+                  widget.title = title.replaceFirst(RegExp(r'^"'), '').replaceFirst(RegExp(r'"$'), '');
                 });
-                debugPrint(title);
               });
             },
           ),
