@@ -177,6 +177,7 @@ class _PostHotListState extends State<PostHotList>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return RefreshIndicator(
       onRefresh: () async {
         await fetchListData();

@@ -87,9 +87,9 @@ class _GithubHotState extends State<GithubHot> {
                 forks: e['forks'],
                 currentPeriodStars: e['currentPeriodStars'],
                 name: e['name'],
-                description: e['description'],
-                avatar: e['avatar'],
-                author: e['author'],
+                description: e['description'] ?? '',
+                avatar: e['avatar'] ?? '',
+                author: e['author'] ?? '',
                 language: e['language'] ?? '',
                 url: e['url'],
                 languageColor: e['languageColor'] ?? '',
@@ -146,7 +146,7 @@ class _GithubHotState extends State<GithubHot> {
       child: Row(
         children: [
           const Text(
-            '编程语言: ',
+            'lang: ',
             style: TextStyle(color: Colors.black, fontSize: 14),
           ),
           CupertinoButton(
@@ -187,7 +187,7 @@ class _GithubHotState extends State<GithubHot> {
                               setState(() {
                                 _selectedLang = _activeLang;
                               });
-
+                              fetchDataList();
                               Navigator.of(context).pop();
                             },
                             padding: const EdgeInsets.symmetric(
@@ -454,8 +454,10 @@ class GithubTrendingItem extends StatelessWidget {
               children: [
                 Text(
                   model.description,
+                  strutStyle: const StrutStyle(
+                      forceStrutHeight: true, height: 0.2, leading: 1),
                   style: const TextStyle(
-                      fontSize: 12, fontWeight: FontWeight.w300),
+                      fontSize: 12, fontWeight: FontWeight.w400),
                 ),
               ],
             ),

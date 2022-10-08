@@ -1,6 +1,6 @@
 import 'package:app/constant/Constant.dart';
 import 'package:app/modules/hot_home/components/anquanke.dart';
-import 'package:app/modules/hot_home/components/bilibili.dart';
+import 'package:app/modules/hot_home/components/bilibili/bilibili.dart';
 import 'package:app/modules/hot_home/components/github/github.dart';
 import 'package:app/modules/hot_home/components/hupu/hupu.dart';
 import 'package:app/modules/hot_home/components/juejin.dart';
