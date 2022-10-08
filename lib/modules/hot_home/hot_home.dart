@@ -43,10 +43,6 @@ class _HotHomeState extends State<HotHome> {
         avatar: AssetImage('${Constant.ASSETS_IMG}github.png'),
         content: GithubHot()),
     const HotItem(
-        title: 'v2ex',
-        avatar: AssetImage('${Constant.ASSETS_IMG}v2ex.png'),
-        content: V2exHot()),
-    const HotItem(
         title: '知乎',
         avatar: AssetImage('${Constant.ASSETS_IMG}zhihu.png'),
         content: ZhihuHot()),
@@ -66,6 +62,10 @@ class _HotHomeState extends State<HotHome> {
         title: '掘金',
         avatar: AssetImage('${Constant.ASSETS_IMG}juejin.png'),
         content: JuejinHot()),
+    const HotItem(
+        title: 'v2ex',
+        avatar: AssetImage('${Constant.ASSETS_IMG}v2ex.png'),
+        content: V2exHot()),
   ];
 
   @override
