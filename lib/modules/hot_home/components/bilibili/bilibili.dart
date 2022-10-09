@@ -1,4 +1,5 @@
 import 'package:app/components/shimmer/shimmer.dart';
+import 'package:app/modules/hot_home/components/bilibili/bilibili_hot.dart';
 import 'package:app/modules/hot_home/components/bilibili/bilibili_rank.dart';
 import 'package:app/modules/hot_home/components/bilibili/bilibili_see.dart';
 import 'package:app/modules/hot_home/components/bilibili/bilibili_week.dart';
@@ -16,7 +17,23 @@ class BilibiliHot extends StatefulWidget {
 class _BilibiliHotState extends State<BilibiliHot> {
   int activeIndex = 0;
 
-  final List<String> tabList = ['综合热门', '排行榜', '每周必看', '入站必刷'];
+  final List<String> tabList = ['综合热门', '排行榜', '每周必看'];
+  ///, '入站必刷'
+
+  final List<Widget> tabViews = [
+    const Shimmer(
+      child: BilibiliHotView(),
+    ),
+    const Shimmer(
+      child: BilibiliRank(),
+    ),
+    const Shimmer(
+      child: BilibiliWeek(),
+    ),
+    // const Shimmer(
+    //   child: BilibiliSee(),
+    // ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -56,30 +73,73 @@ class _BilibiliHotState extends State<BilibiliHot> {
           ),
         ),
         body: TabBarView(
-          children: [
-            Container(),
-            Container(),
-            Container(),
-            Container(),
-            // Shimmer(
-            //   key: Key('0'),
-            //   child: BilibiliHot(),
-            // ),
-            // Shimmer(
-            //   key: Key('1'),
-            //   child: BilibiliRank(),
-            // ),
-            // Shimmer(
-            //   key: Key('2'),
-            //   child: BilibiliWeek(),
-            // ),
-            // Shimmer(
-            //   key: Key('3'),
-            //   child: BilibiliSee(),
-            // ),
-          ],
+          children: tabViews,
         ),
       ),
     );
+  }
+}
+
+class BiliLoading extends StatelessWidget {
+  const BiliLoading({Key? key, required this.loading, required this.child})
+      : super(key: key);
+
+  final bool loading;
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (loading) {
+      return Container(
+        height: 108,
+        margin: const EdgeInsets.only(top: 12, bottom: 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 176,
+              height: 108,
+              margin: const EdgeInsets.only(left: 8, right: 8),
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 20,
+                    margin: const EdgeInsets.only(top: 12, bottom: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                  Container(
+                    height: 20,
+                    decoration: BoxDecoration(
+                      color: Colors.black,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    return child;
   }
 }

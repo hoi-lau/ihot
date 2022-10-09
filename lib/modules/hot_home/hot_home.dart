@@ -6,7 +6,7 @@ import 'package:app/modules/hot_home/components/hupu/hupu.dart';
 import 'package:app/modules/hot_home/components/juejin.dart';
 import 'package:app/modules/hot_home/components/v2ex.dart';
 import 'package:app/modules/hot_home/components/weibo.dart';
-import 'package:app/modules/hot_home/components/zhihu.dart';
+import 'package:app/modules/hot_home/components/zhihu/zhihu.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
 
@@ -50,10 +50,10 @@ class _HotHomeState extends State<HotHome> {
         title: 'bilibili',
         avatar: AssetImage('${Constant.ASSETS_IMG}bilibili.png'),
         content: BilibiliHot()),
-    const HotItem(
-        title: '安全客',
-        avatar: AssetImage('${Constant.ASSETS_IMG}anquanke.png'),
-        content: AnquankeHot()),
+    // const HotItem(
+    //     title: '安全客',
+    //     avatar: AssetImage('${Constant.ASSETS_IMG}anquanke.png'),
+    //     content: AnquankeHot()),
     const HotItem(
         title: '微博',
         avatar: AssetImage('${Constant.ASSETS_IMG}weibo.png'),
@@ -62,10 +62,10 @@ class _HotHomeState extends State<HotHome> {
         title: '掘金',
         avatar: AssetImage('${Constant.ASSETS_IMG}juejin.png'),
         content: JuejinHot()),
-    const HotItem(
-        title: 'v2ex',
-        avatar: AssetImage('${Constant.ASSETS_IMG}v2ex.png'),
-        content: V2exHot()),
+    // const HotItem(
+    //     title: 'v2ex',
+    //     avatar: AssetImage('${Constant.ASSETS_IMG}v2ex.png'),
+    //     content: V2exHot()),
   ];
 
   @override

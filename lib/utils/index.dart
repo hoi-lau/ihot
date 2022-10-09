@@ -119,3 +119,10 @@ String thousandSeparate(int nmb) {
   }
   return res.substring(0, res.length - 1);
 }
+
+String number2W(int nmb) {
+  if (nmb < 10000) return '$nmb';
+  double res = nmb / 10000;
+
+  return '${res.toStringAsFixed(1)}万';
+}

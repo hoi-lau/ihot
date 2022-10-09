@@ -146,7 +146,7 @@ class _GithubHotState extends State<GithubHot> {
       child: Row(
         children: [
           const Text(
-            'lang: ',
+            'lang:',
             style: TextStyle(color: Colors.black, fontSize: 14),
           ),
           CupertinoButton(

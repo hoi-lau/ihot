@@ -12,6 +12,12 @@ class BilibiliSee extends StatefulWidget {
 class _BilibiliSeeState extends State<BilibiliSee>
     with AutomaticKeepAliveClientMixin {
   @override
+  void initState() {
+    super.initState();
+    // https://api.bilibili.com/x/web-interface/popular/precious?page_size=20&page=1
+  }
+
+  @override
   bool get wantKeepAlive => true;
 
   @override
