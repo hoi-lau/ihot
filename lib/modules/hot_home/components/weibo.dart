@@ -41,7 +41,7 @@ class _WeiboHotState extends State<WeiboHot>
       List<WeiboItem> list = data['data']['realtime']
           .where((e) => e['word_scheme'] != null)
           .map<WeiboItem>((e) => WeiboItem(
-              isNew: e['is_new'] ?? 0,
+              labelName: e['label_name'] ?? '',
               note: e['note'],
               num: e['num'],
               wordScheme: e['word_scheme']))
@@ -105,13 +105,13 @@ class _WeiboHotState extends State<WeiboHot>
 class WeiboItem {
   WeiboItem(
       {required this.note,
-      required this.isNew,
+      required this.labelName,
       required this.num,
       required this.wordScheme});
 
   final String note;
   final String wordScheme;
-  final int isNew;
+  final String labelName;
   final int num;
 }
 
@@ -156,36 +156,71 @@ class WeiboLoading extends StatelessWidget {
       padding: const EdgeInsets.only(top: 12, right: 8, bottom: 12, left: 8),
       child: GestureDetector(
         onTap: () {
-          String url = 'https://s.weibo.com/weibo?q=${model.wordScheme}';
+          String url = 'https://s.weibo.com/weibo?q=${Uri.encodeComponent(model.wordScheme)}';
           MyRouter.goWebView(context, url);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
                   margin: const EdgeInsets.only(left: 2, right: 8),
                   width: index < 3 ? 45 : 32,
                   height: index < 3 ? 22 : 18,
-                  padding: EdgeInsets.only(left: index < 3 ? 8 : 0),
+                  padding: EdgeInsets.only(
+                      left: index < 3 ? 8 : 0, top: index < 3 ? 4 : 0),
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                        fit: BoxFit.fitHeight,
-                        image: AssetImage(
-                            '${Constant.ASSETS_IMG}wb_hot_rank${index < 3 ? index + 1 : '_default'}.png')),
+                      image: AssetImage(
+                          '${Constant.ASSETS_IMG}wb_hot_rank${index < 3 ? index + 1 : '_default'}.png'),
+                    ),
                   ),
-                  child: Text(
-                    '${index + 1}',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 12,
-                      height: index < 3 ? 1.9 : 1.4,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: FontWeight.w600,
+                  child: Center(
+                    child: Text(
+                      '${index + 1}',
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontStyle: FontStyle.italic,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: Container(
+                    margin: const EdgeInsets.only(left: 4, right: 4),
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          model.note,
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        model.labelName.isNotEmpty
+                            ? Container(
+                                margin: const EdgeInsets.only(left: 4),
+                                padding:
+                                    const EdgeInsets.only(left: 2, right: 2),
+                                decoration: BoxDecoration(
+                                  color: model.labelName == '热'
+                                      ? const Color.fromRGBO(255, 148, 6, 1)
+                                      : const Color.fromRGBO(255, 56, 82, 1),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(4),
+                                  ),
+                                ),
+                                child: Text(
+                                  model.labelName,
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 12),
+                                ),
+                              )
+                            : Container(),
+                      ],
                     ),
                   ),
                 ),
@@ -196,7 +231,9 @@ class WeiboLoading extends StatelessWidget {
               child: Text(
                 '热度值: ${model.num}',
                 style: const TextStyle(
-                    fontSize: 12, color: Color.fromRGBO(153, 153, 153, 1)),
+                  fontSize: 12,
+                  color: Color.fromRGBO(153, 153, 153, 1),
+                ),
               ),
             )
           ],

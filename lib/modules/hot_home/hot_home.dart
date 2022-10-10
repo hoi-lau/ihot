@@ -4,6 +4,7 @@ import 'package:app/modules/hot_home/components/bilibili/bilibili.dart';
 import 'package:app/modules/hot_home/components/github/github.dart';
 import 'package:app/modules/hot_home/components/hupu/hupu.dart';
 import 'package:app/modules/hot_home/components/juejin.dart';
+import 'package:app/modules/hot_home/components/tianya.dart';
 import 'package:app/modules/hot_home/components/v2ex.dart';
 import 'package:app/modules/hot_home/components/weibo.dart';
 import 'package:app/modules/hot_home/components/zhihu/zhihu.dart';
@@ -54,18 +55,22 @@ class _HotHomeState extends State<HotHome> {
     //     title: '安全客',
     //     avatar: AssetImage('${Constant.ASSETS_IMG}anquanke.png'),
     //     content: AnquankeHot()),
+    // const HotItem(
+    //     title: '36氪',
+    //     avatar: AssetImage('${Constant.ASSETS_IMG}weibo.png'),
+    //     content: WeiboHot()),
     const HotItem(
         title: '微博',
         avatar: AssetImage('${Constant.ASSETS_IMG}weibo.png'),
         content: WeiboHot()),
     const HotItem(
-        title: '掘金',
-        avatar: AssetImage('${Constant.ASSETS_IMG}juejin.png'),
-        content: JuejinHot()),
+        title: 'v2ex',
+        avatar: AssetImage('${Constant.ASSETS_IMG}v2ex.png'),
+        content: V2exHot()),
     // const HotItem(
-    //     title: 'v2ex',
-    //     avatar: AssetImage('${Constant.ASSETS_IMG}v2ex.png'),
-    //     content: V2exHot()),
+    //     title: '掘金',
+    //     avatar: AssetImage('${Constant.ASSETS_IMG}juejin.png'),
+    //     content: JuejinHot()),
   ];
 
   @override
